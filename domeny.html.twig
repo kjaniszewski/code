@@ -1,0 +1,16 @@
+{% extends 'EcCmsStrony:Tresc:288' %}
+
+{% import 'EcCmsStrony:Tresc:281' as makra %}
+
+
+
+{% block zawartosc_podstrony %}	
+
+{{ makra.naglowekPodstrony('Domeny europejskie', 'Domeny') }}
+
+{% set listaTld=lista_domen({'1': 4}) %}
+
+<p>Lista <strong>domen europejskich</strong>, oferowanych do rejestracji przez ecenter.pl:</p>
+{{ makra.listaTld(listaTld) }}
+
+{% endblock %}

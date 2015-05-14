@@ -1,0 +1,58 @@
+{%  macro naglowekPodstrony(tytul, dzial) %}
+
+    <div class="naglowekPodstrony">
+    	<div class="tytulNaglowka"><h1>{{ tytul }}</h1></div>
+    	<div class="dzialNaglowka">{{ dzial }}</div>
+    	<div style="clear: both; width: 100%; height: 2px; background-color: #87888a;"></div>
+    </div>
+
+{%  endmacro %}
+
+{% macro listaRekursywna(dane, poziom) %}
+{% import _self as makra %}
+	{% for d in dane %}
+		{% set margines=24+poziom*10 %}
+		
+		<li style="padding-left: {{ margines }}px"><a href="{{ path("/pomoc", { k: d.id_obiektu})}}"  class="menu_lewe">{{ d.nazwa }}</a></li>
+		{% if d.podkategorie is defined %}
+			{% set poziom=poziom+1 %}
+			{{ makra.listaRekursywna(d.podkategorie, poziom) }}
+			{% set poziom=poziom-1 %}
+		{% endif %}
+	{% endfor %}
+
+{%  endmacro %}
+
+{%  macro naglowekParagrafu(tytul) %}
+
+    <div class="naglowekParagrafu">
+    	{{ tytul|raw }}
+    </div>
+
+{%  endmacro %}
+
+{%  macro listaTld(listaTld) %}
+
+    <table cellspacing="0" cellpadding="0" class="okragleRogi cien sortable" style="border: 1px solid #E8E8E8; width: 636px">
+    <tr>
+        <td class="krg" style="width: 150px"><p class="naglowek_maly">Domena</p></td>
+        <td class="krg" style="width: 100px"><p class="naglowek_maly">Kraj</p></td>
+        <td class="krg"><p class="naglowek_maly">Minimalny okres rejestracji</p></td>
+        <td class="krg" style="width: 100px"><p class="naglowek_maly">Cena</p></td>
+    </tr>
+{% for tld in listaTld %}
+	{% if loop.index % 2 == 0 %}
+		{% set klasa='krg' %}
+	{% else %}
+		{% set klasa='krge' %}
+	{% endif %}
+    <tr>
+        <td class="{{ klasa }}"><a href="{{ path('/informacje_o_tld', {'id': tld.IdTld}) }}">{{ tld.Skrot }}</a></td>
+        <td class="{{ klasa }}">{{ tld.kraj }}</td>
+        <td class="{{ klasa }}">{{ tld.MinimalnyOkresRejestracji }} miesi�cy</td>
+        <td class="{{ klasa }}">od {{ tld.cena }} {{ tld.waluta }}</td>
+    </tr>
+{% endfor %}
+</table>
+
+{%  endmacro %}
